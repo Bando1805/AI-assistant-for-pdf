@@ -4,19 +4,30 @@ from files_uploader import PdfLoader, vectorstore
 from langchain.chains.qa_with_sources import load_qa_with_sources_chain
 from langchain.llms import OpenAI
 from API_keys import OPENAI_API_KEY 
+import json
+from pdf_viewer import pdfViewer
+
 
 pdf_loader = PdfLoader("files")
 pdf_loader.load_files_in_pinecone(index_name='test')
 
+#function to get metadata from a list of documents
+def get_metadata(documents_list):
+    data = { }
+    for i in range(len(documents_list)):
+        document = documents_list[i]
+        data[f'chunk_{i}'] = document.metadata
+    return data
+
+    
 @tool
 def document_search(query: str):
     """Answers a question about a file in the database."""
-    print('---------------------------------------------')
-    print(query)
-    print(type(query))
-    print('---------------------------------------------')
+
     number_of_chunks = 2
     doc = vectorstore.similarity_search(query,k=number_of_chunks)
+    data = get_metadata(doc)
+    pdfViewer(data)
     chain = load_qa_with_sources_chain(OpenAI(temperature=0,openai_api_key=OPENAI_API_KEY), chain_type="stuff")
     chain({"input_documents": doc, "question": query}, return_only_outputs=True)
     return chain({"input_documents": doc, "question": query}, return_only_outputs=True)
