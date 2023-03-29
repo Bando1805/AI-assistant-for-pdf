@@ -11,7 +11,11 @@ pdf_loader.load_files_in_pinecone(index_name='test')
 @tool
 def document_search(query: str):
     """Answers a question about a file in the database."""
-    number_of_chunks = 3
+    print('---------------------------------------------')
+    print(query)
+    print(type(query))
+    print('---------------------------------------------')
+    number_of_chunks = 2
     doc = vectorstore.similarity_search(query,k=number_of_chunks)
     chain = load_qa_with_sources_chain(OpenAI(temperature=0,openai_api_key=OPENAI_API_KEY), chain_type="stuff")
     chain({"input_documents": doc, "question": query}, return_only_outputs=True)
