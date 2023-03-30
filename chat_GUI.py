@@ -26,10 +26,10 @@ class ChatGUI:
 
         # initialize tkinter start
         self.root = Tk()
-        self.root.title("Sample ChatBot")
+        self.root.title("The smartest ChatBot")
         self.root.protocol("WM_DELETE_WINDOW", self.close_handler)
-        # this removes the maximize
-        self.root.resizable(0, 0)
+        self.root.resizable(True, True)  # <-- Allow both horizontal and vertical resizing
+       
 
         self.canvas = Canvas(self.root, width=800, height=500, bg="white")
         self.canvas.grid(row=0, column=0)

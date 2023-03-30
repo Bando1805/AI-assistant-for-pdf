@@ -6,6 +6,9 @@ from langchain.llms import OpenAI
 from API_keys import OPENAI_API_KEY 
 import json
 from pdf_viewer import pdfViewer
+from langchain.utilities.wolfram_alpha import WolframAlphaAPIWrapper
+from API_keys import WOLFRAM_ALPHA_APPID
+
 
 
 pdf_loader = PdfLoader("files")
@@ -34,10 +37,10 @@ def document_search(query: str):
 
 
 @tool
-def parsing_multiplier(string: str):
-    """Multiplies two numbers together."""
-    a, b = string.split(",")
-    return float(a) * float(b)
+def wolfram(query: str):
+    """Answers a question about a math problem."""
+    wolfram = WolframAlphaAPIWrapper(wolfram_alpha_appid=WOLFRAM_ALPHA_APPID)
+    return wolfram.run(query)
 
 tools = [
     Tool(
@@ -46,9 +49,9 @@ tools = [
         description="useful for question answering about a specific document in the database. When you don't know the answer to a query this tool will help you find the answer."
     ),
         Tool(
-        name = "Multiplier",
-        func=parsing_multiplier,
-        description="useful for when you need to multiply two numbers together. The input to this tool should be a comma separated list of numbers of length two, representing the two numbers you want to multiply together. For example, `1,2` would be the input if you wanted to multiply 1 by 2."
-    ),
+        name = "Wolfram Alpha",
+        func=wolfram.run,
+        description="useful for question answering about a math problem. Always use this tool when there is a math operation to do."
+        )
 ]
 

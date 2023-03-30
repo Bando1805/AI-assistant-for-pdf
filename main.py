@@ -5,7 +5,7 @@ from API_keys import OPENAI_API_KEY
 from langchain.memory import ConversationBufferMemory
 from chat_GUI import ChatGUI
 from langchain.chat_models import ChatOpenAI
-from pdf_viewer import pdfViewer
+
 
 memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 

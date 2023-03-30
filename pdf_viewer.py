@@ -32,7 +32,10 @@ class pdfViewer():
             with open(pdf_name, 'wb') as output_file:
                 pdf_writer.write(output_file)
 
-            # open the new file in your default PDF viewer
+            
+            #save the file in the files_used folder     
             os.startfile(pdf_name)
-    
+           
 
+
+        
